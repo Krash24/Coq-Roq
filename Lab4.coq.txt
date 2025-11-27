@@ -1,0 +1,67 @@
+Parameter D : Set.
+Parameter R S T : D -> Prop.
+
+Lemma q1: (forall x:D, (R x)-> (S x) ) ->  ((forall y:D, (R y)) -> (forall z:D, (S z))).
+Proof.
+  intros H1 H2 z.
+  apply H1.
+  apply H2.
+Qed.
+
+Lemma q2:(forall x:D, (R x) -> (S x))-> (forall y:D, (S y) -> (T y)) ->  (forall z:D, (R z)-> (T z)).
+Proof.
+  intros H1 H2 z H3.
+  apply H2.
+  apply H1.
+  apply H3.
+Qed.
+
+Lemma q3:(exists y:D, (R y))-> (forall x:D, (R x)-> (S x))  -> (exists y:D, (S y)).
+Proof.
+  intros H1 H2.
+  destruct H1 as [y Hy].
+  exists y.
+  apply H2.
+  apply Hy.
+Qed.
+
+Lemma q4:(exists x:D, (R x) /\ (S x))  ->  (exists y:D, (R y)) /\ (exists z:D, (S z)).
+Proof.
+  intros H1.
+  destruct H1 as [x [HR HS]].
+  split.
+  - exists x. apply HR.
+  - exists x. apply HS.
+Qed.
+
+Lemma q5: (exists x:D, (R x) \/ (S x))  ->  (exists y:D, (R y)) \/ (exists z:D, (S z)).
+Proof.
+  intros H1.
+  destruct H1 as [x [HR | HS]].
+  - left. exists x. apply HR.
+  - right. exists x. apply HS.
+Qed.
+
+Lemma q6: ~ (exists x:D, ~ (R x))  ->  (forall y:D, ~~(R y)).
+Proof.
+  intros H1 y H2.
+  apply H1.
+  exists y.
+  apply H2.
+Qed.
+
+Lemma q7:(exists y:D, ~ (R y))  ->  ~ (forall z:D, (R z)) .
+Proof.
+  intros H1 H2.
+  destruct H1 as [y Hy].
+  apply Hy.
+  apply H2.
+Qed.
+
+Lemma q8:(forall x:D, R x) -> ~(exists y:D, ~ R y).
+Proof.
+  intros H1 H2.
+  destruct H2 as [y Hy].
+  apply Hy.
+  apply H1.
+Qed.
